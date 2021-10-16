@@ -1,4 +1,6 @@
 #!/usr/bin/python
+#Code sous licence GNU , Merci a vous ;)
+#Réalisation Iceteax
 import smbus;import math;from time import sleep;import RPi.GPIO as GPIO
 #Valeur de declanchement des relay.
 N_TO_DOWN = (-12000)    # Z Casser la vitre
@@ -23,11 +25,11 @@ CALIBR=1
 GPIO.setmode(GPIO.BOARD);GPIO.setwarnings(False)
 x=1
 
-LED29 = 29;GPIO.setup(LED29,GPIO.OUT);GPIO.output(LED29,GPIO.LOW);sleep(0.1);GPIO.output(LED29,GPIO.HIGH);sleep(0.1)
-LED31 = 31;GPIO.setup(LED31,GPIO.OUT);GPIO.output(LED31,GPIO.LOW);sleep(0.1);GPIO.output(LED31,GPIO.HIGH);sleep(0.1)
-LED33 = 33;GPIO.setup(LED33,GPIO.OUT);GPIO.output(LED33,GPIO.LOW);sleep(0.1);GPIO.output(LED33,GPIO.HIGH);sleep(0.1)
-LED35 = 35;GPIO.setup(LED35,GPIO.OUT);GPIO.output(LED35,GPIO.LOW);sleep(0.1);GPIO.output(LED35,GPIO.HIGH);sleep(0.1)
-LED37 = 37;GPIO.setup(LED37,GPIO.OUT);GPIO.output(LED37,GPIO.LOW);sleep(0.1);GPIO.output(LED37,GPIO.HIGH);sleep(0.1)
+R1 = 29;GPIO.setup(R1,GPIO.OUT);GPIO.output(R1,GPIO.LOW);sleep(0.1);GPIO.output(R1,GPIO.HIGH);sleep(0.1)
+R2 = 31;GPIO.setup(R2,GPIO.OUT);GPIO.output(R2,GPIO.LOW);sleep(0.1);GPIO.output(R2,GPIO.HIGH);sleep(0.1)
+R3 = 33;GPIO.setup(R3,GPIO.OUT);GPIO.output(R3,GPIO.LOW);sleep(0.1);GPIO.output(R3,GPIO.HIGH);sleep(0.1)
+R4 = 35;GPIO.setup(R4,GPIO.OUT);GPIO.output(R4,GPIO.LOW);sleep(0.1);GPIO.output(R4,GPIO.HIGH);sleep(0.1)
+R5 = 37;GPIO.setup(R5,GPIO.OUT);GPIO.output(R5,GPIO.LOW);sleep(0.1);GPIO.output(R5,GPIO.HIGH);sleep(0.1)
 
 power_mgmt_1 = 0x6b;power_mgmt_2 = 0x6c   
 def read_byte(reg):
@@ -124,8 +126,8 @@ if CALIBR == 1 :
     print ( "valeurs accel brut                  : X= ",read_X (0x3b),"    Y=",read_Y(0x3d),"    Z=",read_Z(0x3f) )
     print ( "valeurs accel calibré + ou - 300 OK : X= ",X_out,"    Y=",Y_out,"    Z=",Z_out )
     print ( "la valeur de Z doit etre a envrion 14000 cette valeurs nest pas calibrée" )
-    GPIO.output(LED29, GPIO.LOW) ;sleep (0.1);GPIO.output(LED29, GPIO.HIGH) ;sleep (0.1)
-    GPIO.output(LED29, GPIO.LOW) ;sleep (0.1);GPIO.output(LED29, GPIO.HIGH) ; sleep (0.2)
+    GPIO.output(R1, GPIO.LOW) ;sleep (0.1);GPIO.output(R1, GPIO.HIGH) ;sleep (0.1)
+    GPIO.output(R1, GPIO.LOW) ;sleep (0.1);GPIO.output(R1, GPIO.HIGH) ; sleep (0.2)
     x=0
     
 while x==0 :
@@ -136,30 +138,30 @@ while x==0 :
 #<<<<<<<<
     if Y_out > N_TO_LEFT : #or REAL_Y > N_TO_LEFT / 2 :
         print (" <-- Nudge to left","Valeur enregistrée Y=",Y_out,"Valeur debug",read_Y(0x3d),)
-        GPIO.output(LED29, GPIO.LOW) ;sleep (0.1);GPIO.output(LED29, GPIO.HIGH);sleep (0.25)
+        GPIO.output(R1, GPIO.LOW) ;sleep (0.1);GPIO.output(R1, GPIO.HIGH);sleep (0.25)
         
 #>>>>>>>>
     elif Y_out < N_TO_RIGHT : # or REAL_Y < N_TO_RIGHT / 2 :
         print (" --> Nudge to right","Valeur enregistrée Y=",Y_out,"Valeur debug",read_Y(0x3d),)
-        GPIO.output(LED31, GPIO.LOW) ;sleep (0.1);GPIO.output(LED31, GPIO.HIGH);sleep (0.25)
+        GPIO.output(R2, GPIO.LOW) ;sleep (0.1);GPIO.output(R2, GPIO.HIGH);sleep (0.25)
 
 #^^^^^^^^            
     elif X_out > N_TO_UP :
         print (" ^^^ Nudge avant. Valeur enregistrée X=",X_out,"Valeur debug",read_X(0x3b))
-        GPIO.output(LED33, GPIO.LOW) ;sleep (0.1);GPIO.output(LED33, GPIO.HIGH);sleep (0.25)
+        GPIO.output(R3, GPIO.LOW) ;sleep (0.1);GPIO.output(R3, GPIO.HIGH);sleep (0.25)
         
     elif X_out < N_TO_BACK:
         print (" !!! Nudge arr Valeur enregistrée X=",X_out,"Valeur debug",read_X(0x3b))
-        GPIO.output(LED35, GPIO.LOW) ;sleep (0.10);GPIO.output(LED35, GPIO.HIGH);sleep (0.25)
+        GPIO.output(R4, GPIO.LOW) ;sleep (0.10);GPIO.output(R4, GPIO.HIGH);sleep (0.25)
         
     elif Z_out < N_TO_DOWN:
         print ("tu va briser la vitre enfoiré . Valeur enregistrée Z=",Z_out,"Valeur debug",read_Z(0x3f))
-        GPIO.output(LED29, GPIO.LOW) ; sleep (0.1)
-        GPIO.output(LED29, GPIO.HIGH) ; sleep (0.1)
-        GPIO.output(LED31, GPIO.LOW) ; sleep (0.1)
-        GPIO.output(LED31, GPIO.HIGH) ; sleep (0.1)
-        GPIO.output(LED33, GPIO.LOW) ; sleep (0.1)
-        GPIO.output(LED33, GPIO.HIGH) ; sleep (0.1)
+        GPIO.output(R1, GPIO.LOW) ; sleep (0.1)
+        GPIO.output(R1, GPIO.HIGH) ; sleep (0.1)
+        GPIO.output(R2, GPIO.LOW) ; sleep (0.1)
+        GPIO.output(R2, GPIO.HIGH) ; sleep (0.1)
+        GPIO.output(R3, GPIO.LOW) ; sleep (0.1)
+        GPIO.output(R3, GPIO.HIGH) ; sleep (0.1)
     
     elif test == 1 :
         print ( "valeur accel brut    : x" , read_X (0x3b),"y", read_Y(0x3d),"z", read_Z(0x3f) )
